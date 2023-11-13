@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Stores the units and their details in a hash
 def read_units_from_file(filename)
   units = {}
@@ -23,13 +25,13 @@ end
 
 # Gets the unit details from the user and returns them as a hash
 def get_unit_details_from_user
-  puts "Enter the unit name: "
+  puts 'Enter the unit name: '
   unit_name = gets.chomp
-  puts "Enter the unit weight: "
+  puts 'Enter the unit weight: '
   unit_weight = gets.chomp.to_f
-  puts "Enter the unit price: "
+  puts 'Enter the unit price: '
   unit_price = gets.chomp.to_f
-  puts "Enter the amount taken daily: "
+  puts 'Enter the amount taken daily: '
   daily_amount = gets.chomp.to_f
   { unit_name => { weight: unit_weight, price: unit_price, daily_amount: daily_amount } }
 end
@@ -45,7 +47,7 @@ end
 
 # Main script
 def main_script
-  puts "Do you want to read from the file or create new entries? (read/new)"
+  puts 'Do you want to read from the file or create new entries? (read/new)'
   action = gets.chomp.downcase
 
   units = action == 'read' ? read_units_from_file('units.txt') : {}
@@ -53,14 +55,14 @@ def main_script
   display_units(units)
 
   if action == 'read'
-    puts "Do you want to add more units? (yes/no)"
+    puts 'Do you want to add more units? (yes/no)'
     answer = gets.chomp.downcase
     return if answer != 'yes'
   end
 
   loop do
     units.merge!(get_unit_details_from_user)
-    puts "Do you want to add another unit? (yes/no)"
+    puts 'Do you want to add another unit? (yes/no)'
     break if gets.chomp.downcase != 'yes'
   end
 
