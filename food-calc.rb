@@ -52,7 +52,14 @@ end
 # Print the total cost
 puts "The total daily price for all units is #{total_cost}"
 
-# Print each unit and its daily price
-units.each do |unit_name, daily_price|
-  puts "The daily price for #{unit_name} is #{daily_price}"
+# Open a file for writing
+File.open('units.txt', 'w') do |file|
+  # Write the total cost to the file
+  file.puts "The total daily price for all units is #{total_cost}"
+
+  # Print and write each unit and its daily price
+  units.each do |unit_name, daily_price|
+    puts "The daily price for #{unit_name} is #{daily_price}"
+    file.puts "The daily price for #{unit_name} is #{daily_price}"
+  end
 end
