@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+YES = 'yes'
+NO = 'no'
+READ = 'read'
+NEW = 'new'
+
 # Stores the units and their details in a hash
 def read_units_from_file(filename)
   units = {}
@@ -15,6 +20,9 @@ def read_units_from_file(filename)
     end
   end
   units
+rescue Errno::ENOENT
+  puts 'The file does not exist. Starting with an empty units list.'
+  {}
 end
 
 # Displays the units and their details
@@ -44,44 +52,36 @@ end
 def write_units_to_file(units, filename)
   File.open(filename, 'w') do |file|
     units.each do |unit_name, details|
-      file.puts "#{unit_name},#{details[:weight]},#{details[:price]},#{details[:daily_amount]}, #{details[:daily_price]}"
+      file.puts "#{unit_name},#{details[:weight]},#{details[:price]},#{details[:daily_amount]},#{details[:daily_price]}"
     end
   end
 end
 
 # Calculates the full price for the units
 def calculate_full_price(units)
-  total_price = 0.0
-  units.each do |_unit_name, details|
-    total_price += details[:daily_price]
-  end
-  total_price
+  units.values.sum { |details| details[:daily_price] }
 end
 
 # Main script
 def main_script
   puts "\nWelcome to our units manager!\nYou can either read existing units from a file or create new ones."
-  puts 'Do you want to read from the file or create new entries? (read/new)'
-  action = gets.chomp.downcase
+  puts "Do you want to read from the file or create new entries? (#{READ}/#{NEW})"
+  user_choice = gets.chomp.downcase
   units = {}
 
-  if action == 'read'
+  if user_choice == READ
     units = read_units_from_file('units.txt')
-  end
-
-  display_units(units)
-
-  if action == 'read'
+    display_units(units)
     puts "The full price: #{calculate_full_price(units)}"
     puts 'Do you want to add more units? (yes/no)'
-    answer = gets.chomp.downcase
-    return if answer != 'yes'
+    add_more_units = gets.chomp.downcase
+    return if add_more_units != YES
   end
 
   loop do
     units.merge!(get_unit_details_from_user)
     puts 'Do you want to add another unit? (yes/no)'
-    if gets.chomp.downcase != 'yes'
+    if gets.chomp.downcase != YES
       puts "The full price: #{calculate_full_price(units)}"
       break
     end
