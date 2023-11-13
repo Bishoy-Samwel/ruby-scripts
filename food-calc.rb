@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'colorize'
 
 YES = 'yes'
 NO = 'no'
@@ -27,8 +28,18 @@ end
 
 # Displays the units and their details
 def display_units(units)
+  # Print table headers
+  printf("%-20s %-10s %-10s %-15s %-15s\n", "Unit Name", "Weight", "Price", "Daily Amount", "Daily Price")
+  printf("\e[34m%-20s %-10s %-10s %-15s %-15s\n\e[0m", "-"*20, "-"*10, "-"*10, "-"*15, "-"*15) # this will print the line under headers
+
+  # Print each unit
   units.each do |unit_name, details|
-    puts "Unit name: #{unit_name}, Weight: #{details[:weight]}, Price: #{details[:price]}, Daily amount: #{details[:daily_amount]}, daily_price: #{details[:daily_price]}"
+    printf("%-20s %-10s %-10s %-15s %-15s\n",
+           unit_name,
+           details[:weight],
+           details[:price],
+           details[:daily_amount],
+           details[:daily_price])
   end
 end
 
@@ -64,7 +75,7 @@ end
 
 # Main script
 def main_script
-  puts "\nWelcome to our units manager!\nYou can either read existing units from a file or create new ones."
+  puts "\nWelcome to our units manager!\nYou can either read existing units from a file or create new ones.".green
   puts "Do you want to read from the file or create new entries? (#{READ}/#{NEW})"
   user_choice = gets.chomp.downcase
   units = {}
@@ -72,7 +83,7 @@ def main_script
   if user_choice == READ
     units = read_units_from_file('units.txt')
     display_units(units)
-    puts "The full price: #{calculate_full_price(units)}"
+    puts "The full price: #{calculate_full_price(units)}".red
     puts 'Do you want to add more units? (yes/no)'
     add_more_units = gets.chomp.downcase
     return if add_more_units != YES
