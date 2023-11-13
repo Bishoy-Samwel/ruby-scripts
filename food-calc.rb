@@ -1,7 +1,14 @@
-# Initialize total cost
+# Initialize total cost and units hash
 total_cost = 0
+units = {}
 
 loop do
+  # Get the unit name from the user
+  puts "Enter the unit name: "
+  unit_name = gets.chomp
+  puts "The unit name: #{unit_name}"
+  puts ''
+
   # Get the unit weight from the user
   puts "Enter the unit weight: "
   unit_weight = gets.chomp.to_f
@@ -26,6 +33,9 @@ loop do
   # Add to total cost
   total_cost += daily_price
 
+  # Store the unit and its daily price
+  units[unit_name] = daily_price
+
   # Print the result
   puts "The daily price for this unit is #{daily_price}"
   puts "The total daily price so far is #{total_cost}"
@@ -41,3 +51,8 @@ end
 
 # Print the total cost
 puts "The total daily price for all units is #{total_cost}"
+
+# Print each unit and its daily price
+units.each do |unit_name, daily_price|
+  puts "The daily price for #{unit_name} is #{daily_price}"
+end
